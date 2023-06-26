@@ -16,10 +16,51 @@ def walk_tree(directory, base_dir, level_counter=1):
         walk_tree(fold, base_dir, level_counter)
 
 
+def dir_iterator(directory, base_dir, dictionary: dict):
+    path = pathlib.Path(directory)
+    dic = {}
+    dirs = [dir for dir in sorted(path.glob('*')) if dir.is_dir()]
+    for dir in dirs:
+        key_value = dir_iterator(dir, base_dir, dictionary)
+        dic[dir.name] = key_value
+
+    if len(dirs) == 0:
+        return add_files(path, base_dir)
+    else:
+        accumulator(base_dir, dic, path)
+        # return {path.name: dic}
+        return dic
+
+
+def accumulator(base_dir, dictionary, direc):
+    """'Appends' so to speak the contents or a directory
+    to an exisiting dictionary"""
+    dir_conts = add_files(direc, base_dir)
+    keys = list(dir_conts.keys())
+    values = list(dir_conts.values())
+    for pos in range(len(keys)):
+        dictionary[keys[pos]] = values[pos]
+    return dictionary
+
+
+def dir_dict(path, base_dir):
+    """takes a directory and returns its contents' information
+    as a dictionary"""
+    return {path.name: add_files(path, base_dir)}
+
+
 def print_files(curr_dir, base_dir, level_counter):
     files = [item.name for item in sorted(curr_dir.glob('*')) if item.is_file()]
     for item in files:
         print(level_counter * '|-', item)
+
+
+def add_files(curr_dir, base_dir):
+    dictionary = {}
+    for item in sorted(curr_dir.glob('*')):
+        if item.is_file():
+            dictionary[item.name] = build_dict(item, base_dir)
+    return dictionary
 
 
 def build_dict(file_object: pathlib.Path, base_dir):
