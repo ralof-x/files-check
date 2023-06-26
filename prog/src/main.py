@@ -2,6 +2,8 @@ import datetime
 import pathlib
 from termcolor import colored
 import sys
+import numpy as np
+import json
 
 
 def walk_tree(directory, base_dir, level_counter=1):
@@ -34,9 +36,37 @@ def build_dict(file_object: pathlib.Path, base_dir):
     return file_dict
 
 
-def main():
+
+
+def alt():
+    location = '/home/ralof/Documents/spare_time/Python/projects/chk_files'
+    test_loc = location + '/test_dir'
+    walk_tree(test_loc, test_loc)
+    directory_structure = {}
+    directory = location + '/test_dir'
+    directory_structure = dir_iterator(directory, directory, directory_structure)
+    np.save(location + '/prog/saves/dir_structure.npy', directory_structure)
+    json.dump(directory_structure, open(location + '/prog/saves/dir_structure.json', 'w'))
+
+
+
+def normal():
     walk_tree(sys.argv[1], sys.argv[1])
+    directory_structure = {}
+    directory_structure = dir_iterator(sys.argv[1], sys.argv[1], directory_structure)
+    np.save('prog/saves/dir_structure.npy', directory_structure)
+    json.dump(directory_structure, open('prog/saves/dir_structure.json', 'w'))
+
+
+
+
+def main():
+    if len(sys.argv) != 2:
+        alt()
+    else:
+        normal()
 
 
 if __name__ == "__main__":
     main()
+
