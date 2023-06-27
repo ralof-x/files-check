@@ -34,3 +34,7 @@ will just end without doing anything
  - the filename of the saved json does not reflect the location that
 was given as an argument: if it is not renamed, you will forget over
 which directory you let it run!
+
+# License
+This project is licensed under the MIT license. See [license](LICENSE)
+for more detail.
