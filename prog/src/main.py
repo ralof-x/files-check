@@ -63,20 +63,25 @@ def add_files(curr_dir, base_dir):
     return dictionary
 
 
+def create_printout(dic: dict):
+    print('-' * 100)
+    print(f'{"Filename and relative location: " : <35}{dic["location"] : <20}')
+    print(f'{"Size in kilobytes " : <35}{dic["size"] : <20}')
+    print(f'{"last modified " : <35}{dic["last-modified"] : <20}')
+
+
 def build_dict(file_object: pathlib.Path, base_dir):
     file_dict = {}
     if file_object.is_file():
         file_dict["type"] = "file"
-        timestamp = file_object.stat().st_mtime
         time = datetime.datetime.fromtimestamp(file_object.stat().st_mtime).strftime('%Y-%m-%d %H:%M:%S')
         file_dict["last-modified"] = time
         file_dict["size"] = round((file_object.stat().st_size / 1000), 1)
         file_dict["name"] = file_object.name
         path = str(file_object.resolve()).split(base_dir)
         file_dict["location"] = path[-1]
+        create_printout(file_dict)
     return file_dict
-
-
 
 
 def alt():
@@ -90,15 +95,12 @@ def alt():
     json.dump(directory_structure, open(location + '/prog/saves/dir_structure.json', 'w'))
 
 
-
 def normal():
     walk_tree(sys.argv[1], sys.argv[1])
     directory_structure = {}
     directory_structure = dir_iterator(sys.argv[1], sys.argv[1], directory_structure)
     np.save('prog/saves/dir_structure.npy', directory_structure)
     json.dump(directory_structure, open('prog/saves/dir_structure.json', 'w'))
-
-
 
 
 def main():
@@ -110,4 +112,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
