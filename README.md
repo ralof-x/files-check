@@ -13,6 +13,13 @@ contents. Giving a relative directory works fine.
 $ python prog/src/main.py 
 ```
 
+# Testing
+To run the tests included in the file `prog/test/test.py` change to
+the main project directory and run
+```bash
+$ pytest
+```
+
 # What it does currently
 The program recursively iterates over the content of the given
 directory, first displaying it in a similar way as the GNU/Linux
@@ -20,13 +27,11 @@ package `tree` would do. Thereafter, it builds a dictionary that
 retains the structure of the given directory and contains important
 information about each file such as the time and date it was last
 edited, its size in KiloBytes as well as name and location. This
-dictionary is then saved into a json file in location `prog/saves`
+dictionary is then saved into a json file in location `prog/saves`.
+It prints out the information that is collected about each file.
 
 # What is planned
- - make it print the information to the command line from where it was
-called
  - give it the ability to take two locations
- - 
 
 # Issues
  - no warning, if the given argument is not a directory: the program
